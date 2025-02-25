@@ -26,7 +26,7 @@ function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
 
     if (squares[i] || calculateWinner(squares)) {
-      return;  //si el lugar está ocupado, no se hace nada
+      return;  //si la casilla está ocupada, no se hace nada
     }
     
     //variable para intercambiar el estado del juego
@@ -64,8 +64,8 @@ function Board({ xIsNext, squares, onPlay }) {
 
 export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
-  const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
+  const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
 
@@ -74,12 +74,10 @@ export default function Game() {
     setHistory(nextHistory);
     //para que apunte a la ultima entrada del historial
     setCurrentMove(nextHistory.length - 1);
-    setXIsNext(!xIsNext);
   }
 
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
-    setXIsNext(nextMove % 2 === 0);
   }
 
   // variable para mostrar los movimientos realizados en el historial y poder "saltar" a un estado anterior
