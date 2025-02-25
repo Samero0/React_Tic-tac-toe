@@ -18,6 +18,11 @@ export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
 
   function handleClick(i) {
+
+    if (squares[i]){
+      return;  //si el lugar está ocupado, no se hace nada
+    }
+
     const nextSquares = squares.slice();
     if (xIsNext){
       nextSquares[i] = "X";
@@ -48,4 +53,6 @@ export default function Board() {
     </>
   );
 }
+
+
 
