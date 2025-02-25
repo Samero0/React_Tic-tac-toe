@@ -13,7 +13,8 @@ function Square({ value, onSquareClick }) {
 
 //función para definir el tablero con 9 botones Square
 function Board({ xIsNext, squares, onPlay }) {
-
+  
+  // función para verificar si hay un ganador
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -27,7 +28,8 @@ function Board({ xIsNext, squares, onPlay }) {
     if (squares[i] || calculateWinner(squares)) {
       return;  //si el lugar está ocupado, no se hace nada
     }
-
+    
+    //variable para intercambiar el estado del juego
     const nextSquares = squares.slice();
     if (xIsNext){
       nextSquares[i] = "X";
@@ -38,6 +40,7 @@ function Board({ xIsNext, squares, onPlay }) {
   }
 
   return (
+    // se crea el tablero con 3 filas y 3 columnas
     <>
       <div className="status">{status}</div>
       <div className="board-row">
@@ -60,27 +63,54 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 
 export default function Game() {
+  const [currentMove, setCurrentMove] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentSquares = history[history.length - 1];
+  const currentSquares = history[currentMove];
+
 
   function handlePlay(nextSquares) {
-    setHistory([...history, nextSquares]);
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    //para que apunte a la ultima entrada del historial
+    setCurrentMove(nextHistory.length - 1);
     setXIsNext(!xIsNext);
   }
 
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
+  }
+
+  // variable para mostrar los movimientos realizados en el historial y poder "saltar" a un estado anterior
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Ir al movimiento #' + move;
+    } else {
+      description = 'Ir al inicio del juego';
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
   return (
+    // estructura para mostrar el tablero y el historial de movimientos
     <div className="game">
       <div className="game-board">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{/*TODO*/}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
 }
 
+//no se detalla en la documentación pero se define la función para verificar si hay un ganador
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
