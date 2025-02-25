@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 //se le pasa value como parámetro para definir el valor que contendrá el botón
 function Square({ value, onSquareClick }) {
-  // se define clase para css
+  // se define clase para css y para usar con react 
   // se aigna función para cuando se haga click
   return (
     <button className="square" onClick={onSquareClick}>
@@ -14,13 +14,20 @@ function Square({ value, onSquareClick }) {
 //función para definir el tablero con 9 botones Square
 export default function Board() {
 
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true);
+
   function handleClick(i) {
     const nextSquares = squares.slice();
-    nextSquares[i] = "X";
+    if (xIsNext){
+      nextSquares[i] = "X";
+    } else{
+      nextSquares[i] = "O";
+    }
+    setXIsNext(!xIsNext);  //cambia el turno de jugador entre X y O
     setSquares(nextSquares);
   }
 
-  const [squares, setSquares] = useState(Array(9).fill(null));
   return (
     <>
       <div className="board-row">
