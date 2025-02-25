@@ -68,6 +68,7 @@ export default function Game() {
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
+  console.log(currentMove);
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -97,14 +98,17 @@ export default function Game() {
 
   return (
     // estructura para mostrar el tablero y el historial de movimientos
-    <div className="game">
-      <div className="game-board">
+  <div className="game">
+    <div className="game-board">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
-        <ol>{moves}</ol>
-      </div>
     </div>
+    <div className="current-play">
+      <ol>Estas en el movimiento: {currentMove + 1}</ol>
+    </div>
+    <div className="game-info">
+      <ol>{moves}</ol>
+    </div>
+  </div>
   );
 }
 
