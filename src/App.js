@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 //se le pasa value como parámetro para definir el valor que contendrá el botón
 function Square({ value, onSquareClick }) {
-  // se define clase para css y para usar con react 
+  // se define clase para css 
   // se aigna función para cuando se haga click
   return (
     <button className="square" onClick={onSquareClick}>
@@ -84,6 +84,7 @@ export default function Game() {
     let description;
     if (move > 0) {
       description = 'Ir al movimiento #' + move;
+      
     } else {
       description = 'Ir al inicio del juego';
     }
